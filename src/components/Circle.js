@@ -1,13 +1,11 @@
 import React from 'react';
-import '../App.css'
-import InputBase from '@mui/material/InputBase';
-
-const handleCircleClick = () => {
-  console.log(`Circle clicked!`);
-};
-
+import '../App.css';
 
 const Circle = (props) => {
+
+  const handleCircleClick = (name) => {
+    console.log(`Circle ${name} clicked!`);
+  };
 
   const Label = (props) => {
     if (props.id === 1) {
@@ -36,7 +34,7 @@ const Circle = (props) => {
   return(
     <div key={index} className="flex items-center mb-4">
       <div
-        onClick={handleCircleClick}
+        onClick={() => handleCircleClick(props.name)}
         style={{
           position: 'absolute',
           left: props.x,

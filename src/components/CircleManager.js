@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import AddCircleButton from './AddCircleButton';
 import Circle from './Circle';
+import InteractiveVennDiagram from './InteractiveVennDiagram';
 
 const CircleManager = () => {
-    const [circles, setCircles] = useState([]);
+    // const [circles, setCircles] = useState([]);
+    const [circles, setCircles] = useState([
+        { name: 'Circle 1', x: 100, y: 100 },
+        { name: 'Circle 2', x: 200, y: 100 },
+        { name: 'Circle 3', x: 150, y: 170 }
+      ]);
 
     const addCircle = () => {
         if (circles.length >= 3) {
@@ -21,6 +27,12 @@ const CircleManager = () => {
         });
 
     };
+
+    return (
+        <div id="circle-container">
+            <InteractiveVennDiagram circles={circles} />
+        </div>
+    )
 
     return (
     <div className="relative h-screen">
