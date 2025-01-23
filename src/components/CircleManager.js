@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AddCircleButton from './AddCircleButton';
 import Circle from './Circle';
 import InteractiveVennDiagram from './InteractiveVennDiagram';
+import ImageCircleComponent from './ImageCircleComponent';
 
 const CircleManager = () => {
     // const [circles, setCircles] = useState([]);
@@ -29,10 +30,13 @@ const CircleManager = () => {
     };
 
     return (
-        <div id="circle-container">
-            <InteractiveVennDiagram circles={circles} />
+        <div className="relative h-screen">
+            <div id="circle-container">
+                <ImageCircleComponent/>
+            </div>
         </div>
-    )
+    );
+
 
     return (
     <div className="relative h-screen">
