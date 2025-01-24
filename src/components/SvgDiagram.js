@@ -1,6 +1,28 @@
 import * as React from "react";
 
-const SvgDiagram = ({onClickHandler, colours, partIds}) => (
+/**
+ * Renders the SVG Venn diagram, with three circles
+ * @param sectionClickHandler Handles clicks on sections
+ * @param lineClickHandler Handles clicks on lines
+ * @param sectionStates Contains the state of each section
+ * @param lineStates Contains the state of each line
+ * @param getSectionColour Gets the colour of a section
+ * @param showCross For each section, whether to show a cross
+ * @param showCrossOnLine For each line, whether to show a cross
+ * @param sectionPaths Contains the path for each section
+ * @param sectionCrossPaths Contains the path for each cross inside a section
+ * @param linePaths Contains the path for each line
+ * @param lineCrossPaths Contains the path for each cross on a line
+ * @returns
+ */
+const SvgDiagram = ({
+    sectionClickHandler, lineClickHandler,
+    sectionStates, lineStates,
+    getSectionColour,
+    showCross, showCrossOnLine,
+    sectionPaths, sectionCrossPaths,
+    linePaths, lineCrossPaths
+  }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     id="svg3"
@@ -37,124 +59,40 @@ const SvgDiagram = ({onClickHandler, colours, partIds}) => (
       stroke="#000"
       strokeWidth="2"
     ></circle>
-    <path
-      id={partIds.SECTION_A}
-      onClick={() => onClickHandler(partIds.SECTION_A)}
-      fill={colours[partIds.SECTION_A]}
-      strokeWidth="0.535"
-      d="M64.768 239.074c-26.28-17.89-44.888-45.437-51.92-76.862-3.599-16.083-3.599-37.39 0-53.474 11.647-52.053 53.996-90.824 106.761-97.74 12.55-1.645 30.458-.868 42.603 1.85 9.587 2.145 21.31 6.24 28.579 9.984l2.035 1.048-3.094 2.116c-31.783 21.732-53.041 57.324-56.972 95.386-.348 3.369-.532 10.998-.42 17.443l.199 11.455-5.36 3.506c-28.734 18.795-49.706 49.354-56.67 82.577l-1.214 5.793z"
-      transform="scale(.31)"
-    ></path>
-    <path
-      id={partIds.SECTION_B}
-      onClick={() => onClickHandler(partIds.SECTION_B)}
-      fill={colours[partIds.SECTION_B]}
-      strokeWidth="0.535"
-      d="M329.411 236.134c-4.2-20.197-14.023-40.218-27.869-56.804-8.045-9.637-20.547-20.597-30.508-26.743l-3.575-2.206.2-11.506c.222-12.805-.364-20.194-2.385-30.07-6.754-33.012-26.31-62.747-53.964-82.055l-4.12-2.878 2.027-1.044c7.26-3.74 18.989-7.836 28.57-9.98 16.084-3.599 37.391-3.599 53.475 0 36.642 8.199 67.31 31.729 84.608 64.916 6.485 12.443 11.344 27.85 13.107 41.562 1.105 8.602 1.105 23.697 0 32.298-4.008 31.18-20.937 61.555-45.202 81.103-3.783 3.047-12.48 9.308-12.93 9.308-.114 0-.76-2.655-1.434-5.9"
-      transform="scale(.31)"
-    ></path>
-    <path
-      id={partIds.SECTION_C}
-      onClick={() => onClickHandler(partIds.SECTION_C)}
-      fill={colours[partIds.SECTION_C]}
-      strokeWidth="0.535"
-      d="M183.936 388.988c-23.527-3.195-46.205-13.106-63.99-27.966-26.04-21.757-42.036-52.416-45.019-86.285-.574-6.524-.49-20.034.128-20.653.139-.139 3.248 1.042 6.91 2.625 12.377 5.35 26.331 9.13 38.63 10.464 6.69.726 23.071.726 29.76 0 15.008-1.628 35.454-7.896 47.018-14.413l2.729-1.538 2.347 1.4c3.834 2.287 14.737 6.81 22.018 9.134 7.761 2.478 17.603 4.596 25.177 5.417 6.69.726 23.072.726 29.761 0 12.299-1.334 26.253-5.114 38.63-10.464 3.662-1.583 6.769-2.766 6.904-2.631.625.625.71 13.836.133 20.606-3.274 38.41-23.787 73.033-55.996 94.515-11.56 7.711-28.692 14.992-42.056 17.874-12.78 2.756-30.946 3.564-43.084 1.915"
-      transform="scale(.31)"
-    ></path>
-    <path
-      id={partIds.INTERSECTION_AB}
-      onClick={() => onClickHandler(partIds.INTERSECTION_AB)}
-      fill={colours[partIds.INTERSECTION_AB]}
-      strokeWidth="0.535"
-      d="M139.358 133.774c.29-14.641 1.159-20.976 4.468-32.57 8.503-29.788 28.926-56.903 54.393-72.214l1.967-1.182 5.213 3.534c27.007 18.31 45.588 45.598 52.704 77.396 1.855 8.294 2.673 16.73 2.673 27.576v10.422l-3.301-1.667c-9.172-4.63-23.572-9.194-35.788-11.342-5.822-1.024-8.647-1.178-21.687-1.183-13.345-.005-15.749.13-21.865 1.232-12.576 2.266-26.456 6.672-35.67 11.324l-3.364 1.697z"
-      transform="scale(.31)"
-    ></path>
-    <path
-      id={partIds.INTERSECTION_AC}
-      onClick={() => onClickHandler(partIds.INTERSECTION_AC)}
-      fill={colours[partIds.INTERSECTION_AC]}
-      strokeWidth="0.535"
-      d="M119.143 259.94c-13.356-1.812-25.033-5.305-37.885-11.334-3.833-1.798-5.22-2.712-5.22-3.437 0-2.46 2.841-14.009 5.09-20.686 8.508-25.263 24.97-47.165 47.333-62.975 2.769-1.958 5.106-3.488 5.194-3.4.087.088.676 2.561 1.308 5.497 3.77 17.522 12.401 36.487 23.145 50.853 9.035 12.082 21.877 24.29 33.242 31.606l1.525.981-2.06 1.061c-10.762 5.543-25.793 10.054-39.474 11.847-7.74 1.015-24.672 1.008-32.198-.013"
-      transform="scale(.31)"
-    ></path>
-    <path
-      id={partIds.INTERSECTION_BC}
-      onClick={() => onClickHandler(partIds.INTERSECTION_BC)}
-      fill={colours[partIds.INTERSECTION_BC]}
-      strokeWidth="0.535"
-      d="M248.193 259.94c-13.126-1.78-28.593-6.47-38.976-11.817l-2.028-1.045 4.121-2.877c27.15-18.956 46.195-47.425 53.564-80.068.73-3.235 1.391-5.945 1.469-6.022.077-.078 1.928 1.087 4.114 2.588 22.427 15.397 39.997 38.518 48.38 63.665 2.225 6.67 5.126 18.441 5.126 20.794 0 .74-1.357 1.635-5.221 3.448-13.145 6.166-24.532 9.537-38.314 11.343-7.778 1.019-24.693 1.014-32.235-.01z"
-      transform="scale(.31)"
-    ></path>
-    <path
-      id={partIds.INTERSECTION_ABC}
-      onClick={() => onClickHandler(partIds.INTERSECTION_ABC)}
-      fill={colours[partIds.INTERSECTION_ABC]}
-      strokeWidth="0.535"
-      d="M194.69 239.641c-27.1-18.119-46.955-47.577-53.063-78.73a657 657 0 0 0-1.084-5.44c-.301-1.427 1.835-2.763 9.98-6.24 11.03-4.708 23.965-8.144 35.75-9.497 8.28-.951 27.086-.401 34.878 1.02 10.929 1.992 22.428 5.633 32.238 10.205 6.85 3.192 6.492 2.582 5.206 8.88-6.603 32.341-25.063 60.327-52.17 79.088-6.806 4.712-5.844 4.653-11.735.714"
-      transform="scale(.31)"
-    ></path>
-    <path
-      id={partIds.LINE_AB_LEFT}
-      onClick={() => onClickHandler(partIds.LINE_AB_LEFT)}
-      fill={colours[partIds.LINE_AB_LEFT]}
-      d="m59.804 7.395-4.578 3.521-3.873 3.58-3.522 4.52-2.64 4.753-2.465 5.986-1.292 5.517-.41 5.106-.118 3.521.352 2.641 1.996-1.056-.235-4.813.646-5.634 1.196-4.784 2.676-6.432 3.217-5.146 3.154-3.61L57.02 12.2l2.49-2.034 2.448-1.618z"
-    ></path>
-    <path
-      id={partIds.LINE_AB_RIGHT}
-      onClick={() => onClickHandler(partIds.LINE_AB_RIGHT)}
-      fill={colours[partIds.LINE_AB_RIGHT]}
-      strokeWidth="0.31"
-      d="m61.975 8.627 4.402 2.876 4.46 4.226L74.3 20.13l2.876 5.048 1.878 4.87 1.232 4.285.587 5.282v4.578l-.117 1.232 2.054 1.233.294-4.285-.323-5.135-.675-4.05-.969-3.52-1.115-3.14L78.35 22.8l-2.26-3.58-2.553-3.492-2.876-3.11-2.494-2.29-2.611-1.966-1.526-1.056Z"
-    ></path>
-    <path
-      id={partIds.LINE_AC_TOP}
-      onClick={() => onClickHandler(partIds.LINE_AC_TOP)}
-      fill={colours[partIds.LINE_AC_TOP]}
-      strokeWidth="0.31"
-      d="m21.497 75.114 1.41-5.644 1.536-3.901 2.2-4.482 3.693-5.187 3.403-3.694 3.486-2.946 4.067-2.656.332 2.24-4.4 2.989-3.029 2.905-2.946 3.361-2.324 3.113-1.618 3.112-1.577 3.195-1.204 3.901-.705 2.573-.332 2.2z"
-    ></path>
-    <path
-      id={partIds.LINE_AC_BOTTOM}
-      onClick={() => onClickHandler(partIds.LINE_AC_BOTTOM)}
-      fill={colours[partIds.LINE_AC_BOTTOM]}
-      strokeWidth="0.31"
-      d="m23.417 76.237 5.194 2.377 4.108 1.203 2.758.587 2.759.352 2.523.205 3.287-.058 2.993-.235 3.287-.587 3.198-.851 3.404-1.203 3.023-1.409 2.083 1.174-2.7 1.409-4.46 1.731-4.196 1.144-3.11.587-3.14.264-3.61.06-2.758-.148-3.257-.44-2.759-.557-2.377-.734-2.611-.968-2.025-.793-1.849-.792z"
-    ></path>
-    <path
-      id={partIds.LINE_BC_BOTTOM}
-      onClick={() => onClickHandler(partIds.LINE_BC_BOTTOM)}
-      fill={colours[partIds.LINE_BC_BOTTOM]}
-      strokeWidth="0.31"
-      d="m63.97 76.618 4.55 1.966 4.225 1.233 4.402.85 4.401.324 4.783-.294 2.994-.41 4.313-1.028 3.433-1.35 1.79-.762 1.644-.851.323 2.2-2.935 1.32-4.488 1.564-4.244 1.017-2.697.332-3.631.27-3.901-.104-2.345-.26-3.02-.487-3.734-.986-3.05-1.079-2.905-1.276L62 77.801Z"
-    ></path>
-    <path
-      id={partIds.LINE_BC_TOP}
-      onClick={() => onClickHandler(partIds.LINE_BC_TOP)}
-      fill={colours[partIds.LINE_BC_TOP]}
-      strokeWidth="0.31"
-      d="m82.77 46.624 3.486 2.283 3.632 3.009 2.884 2.905 2.884 3.735 1.93 3.07 2.656 5.54 1.431 4.296.789 3.735-1.95 1.141-.208-1.909-.872-3.32-1.37-3.797-.767-1.826-1.556-2.988-1.785-2.884-2.157-2.78-2.283-2.47-2.822-2.635-2.2-1.743-2.012-1.141z"
-    ></path>
-    <path
-      id={partIds.LINE_AB_MIDSECTION}
-      onClick={() => onClickHandler(partIds.LINE_AB_MIDSECTION)}
-      fill={colours[partIds.LINE_AB_MIDSECTION]}
-      strokeWidth="0.31"
-      d="m43.139 45.608 3.091-1.453 3.756-1.37 4.316-1.057 4.378-.623 4.42-.145 3.776.29 3.88.685 3.134.83 3.154 1.058 2.178.934 1.64.83-.333 2.179-1.452-.81-1.888-.85-1.743-.685-2.117-.726-2.427-.664-2.034-.436-2.262-.29-1.763-.208-4.295-.124-4.482.435-4.15.893-2.449.747-2.718 1.037-2.22 1.079-1.058.519z"
-    ></path>
-    <path
-      id={partIds.LINE_AC_MIDSECTION}
-      onClick={() => onClickHandler(partIds.LINE_AC_MIDSECTION)}
-      fill={colours[partIds.LINE_AC_MIDSECTION]}
-      strokeWidth="0.31"
-      d="m43.325 47.641-1.909 1.204 1.536 5.976 1.992 4.897 3.237 5.394 3.61 4.69 3.735 3.403 4.399 3.32 2.158-1.12-3.818-2.45-3.03-2.53-2.697-2.989-2.946-3.818-2.407-4.066-1.577-3.57-1.038-3.07-.788-3.03z"
-    ></path>
-    <path
-      id={partIds.LINE_BC_MIDSECTION}
-      onClick={() => onClickHandler(partIds.LINE_BC_MIDSECTION)}
-      fill={colours[partIds.LINE_BC_MIDSECTION]}
-      strokeWidth="0.31"
-      d="m80.509 47.683-.955 5.021-1.784 5.146-1.868 3.528-2.573 3.942-3.237 3.735-3.693 3.32-2.656 1.95-1.784 1.12 1.991 1.246 3.403-2.449 3.445-3.112 2.299-2.405 3.228-4.343 2.582-4.52 1.35-3.169 1.145-3.257.616-2.67.44-1.937z"
-    ></path>
+    {Object.entries(sectionPaths).map(([id, path]) => (
+        <g key={id} onClick={() => sectionClickHandler(id)}>
+          <path
+            id={id}
+            fill={getSectionColour(sectionStates[id])}
+            strokeWidth="0.535"
+            d={path}
+            transform="scale(.31)"
+          ></path>
+          {showCross(sectionStates[id]) && (
+            <path
+              d={sectionCrossPaths[id]}
+              fill="black"
+            />
+          )}
+        </g>
+      ))}
+
+    {Object.entries(linePaths).map(([id, path]) => (
+        <g key={id} onClick={() => lineClickHandler(id)}>
+          <path
+            id={id}
+            fill="black"
+            strokeWidth="0.535"
+            d={path}
+          ></path>
+          {showCrossOnLine(lineStates[id]) && (
+            <path
+              d={lineCrossPaths[id]}
+              fill="black"
+            />
+          )}
+        </g>
+      ))}
   </svg>
 );
 
