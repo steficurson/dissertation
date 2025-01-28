@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import SyllogismDisplay from './components/SyllogismDisplay';
-import CircleManager from './components/CircleManager';
+import MainScreen from './components/MainScreen';
 
 function App() {
   const [currentDay, setCurrentDay] = useState("...uhhh...");
@@ -25,7 +25,7 @@ function App() {
 
   return (
     <div className="App relative h-screen">
-          <CircleManager/>
+          <MainScreen/>
           <div className="absolute bottom-4 left-4">
             <SyllogismDisplay syllogism={currentSyllogism}/>
           </div>

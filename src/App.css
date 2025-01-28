@@ -56,3 +56,24 @@
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
+
+.circle-label {
+  position: relative;
+  display: inline-block;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#circle-label-a {
+  margin-bottom: 200px;
+  margin-right: 20px;
+}
+
+#circle-label-b {
+  margin-bottom: 200px;
+  margin-left: 20px;
+}
+
+#circle-label-c {
+  margin-top: 20px
+}
