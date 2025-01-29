@@ -21,6 +21,9 @@ class Syllogism(db.Model):
     premise1 = db.Column(db.String(100), nullable=False)
     premise2 = db.Column(db.String(100), nullable=False)
     conclusion = db.Column(db.String(100), nullable=False)
+    major_term = db.Column(db.String(50), nullable=False)
+    minor_term = db.Column(db.String(50), nullable=False)
+    middle_term = db.Column(db.String(50), nullable=False)
     valid = db.Column(db.Boolean, nullable=False)
 
     def __repr__(self):

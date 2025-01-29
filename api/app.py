@@ -64,6 +64,9 @@ def get_syllogisms():
         data["premise1"] = syllogism.premise1
         data["premise2"] = syllogism.premise2
         data["conclusion"] = syllogism.conclusion
+        data["major_term"] = syllogism.major_term
+        data["minor_term"] = syllogism.minor_term
+        data["middle_term"] = syllogism.middle_term
         data["valid"] = syllogism.valid
         data_list.append(data)
     return jsonify({"syllogisms": data_list})

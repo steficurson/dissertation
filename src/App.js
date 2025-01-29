@@ -4,7 +4,6 @@ import SyllogismDisplay from './components/SyllogismDisplay';
 import MainScreen from './components/MainScreen';
 
 function App() {
-  const [currentDay, setCurrentDay] = useState("...uhhh...");
   const [syllogismsInTutorial, setSyllogismsInTutorial] = useState([])
   const [currentSyllogism, setCurrentSyllogism] = useState("No syllogism retrieved.");
   const [tutorialWeek, setTutorialWeek] = useState(1);
@@ -25,7 +24,7 @@ function App() {
 
   return (
     <div className="App relative h-screen">
-          <MainScreen/>
+          <MainScreen syllogism={currentSyllogism}/>
           <div className="absolute bottom-4 left-4">
             <SyllogismDisplay syllogism={currentSyllogism}/>
           </div>
