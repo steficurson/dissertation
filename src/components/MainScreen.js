@@ -3,11 +3,13 @@ import SvgDiagramClicker from './SvgDiagramClicker';
 
 const MainScreen = () => {
     return (
-        <div className="relative h-screen w-screen flex justify-center items-center">
-            <p className="noselect circle-label" id="circle-label-a">Animal</p>
-            <SvgDiagramClicker />
-            <p className="noselect circle-label" id="circle-label-b">Human</p>
-            <p className="noselect circle-label" id="circle-c">Mortal</p>
+        <div className="relative h-screen w-screen">
+            <p className="noselect circle-label mr-48 translate-y-8">Animal</p>
+            <p className="noselect circle-label ml-48 translate-y-8">Human</p>
+            <div className='h-50 flex justify-center items-center'>
+                <SvgDiagramClicker />
+            </div>
+            <p className="noselect circle-label">Mortal</p>
         </div>
     )
 };
