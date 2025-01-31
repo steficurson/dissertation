@@ -2,6 +2,7 @@ import time
 from flask import Flask, jsonify, request
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 from models import db, Student, Syllogism, Tutorial
 
@@ -10,7 +11,7 @@ app = Flask(__name__, static_folder='../build', static_url_path='/')
 #database config
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# include CORS stuff (do later)
+CORS(app) #cross origin resource sharing
 
 migrate = Migrate(app, db)
 db.init_app(app)
@@ -87,7 +88,41 @@ def create_student():
 def index():
     return app.send_static_file('index.html')
 
+@app.route('/api/check', methods=['POST'])
+def check_endpoint():
+    try:
+        data = request.get_json()
+        sectionStates = data.get('sectionStates', {})
+        lineStates = data.get('lineStates', {})
+
+        result = check_answer(sectionStates, lineStates)
+
+        return jsonify({
+            'status': 'success',
+            'result': result
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 400
+
+def check_answer(sectionState, lineState):
+    # the BIG logic
+    # TODO
+    # hehehe
+    for section, state in sectionState.items():
+        print(f"received sectionState: {section} {state}")
+    for line, state in lineState.items():
+        print(f"received lineState: {line} {state}")
+    return {"message": "Success"}
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
         app.run(debug=True)
+
+
+

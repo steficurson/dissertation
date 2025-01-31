@@ -6,7 +6,7 @@ const SyllogismDisplay = (props) => {
 
   const render_as_text = (syllogism) => {
     return (
-      <div class="noselect">
+      <div className="noselect">
         {syllogism.premise1} <br/>
         {syllogism.premise2} <br/>
         ∴ {syllogism.conclusion}

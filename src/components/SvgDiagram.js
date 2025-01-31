@@ -8,7 +8,6 @@ import * as React from "react";
  * @param lineStates Contains the state of each line
  * @param getSectionColour Gets the colour of a section
  * @param showCross For each section, whether to show a cross
- * @param showCrossOnLine For each line, whether to show a cross
  * @param sectionPaths Contains the path for each section
  * @param sectionCrossPaths Contains the path for each cross inside a section
  * @param linePaths Contains the path for each line
@@ -19,7 +18,7 @@ const SvgDiagram = ({
     sectionClickHandler, lineClickHandler,
     sectionStates, lineStates,
     getSectionColour,
-    showCross, showCrossOnLine,
+    showCross,
     sectionPaths, sectionCrossPaths,
     linePaths, lineCrossPaths
   }) => (
@@ -85,7 +84,7 @@ const SvgDiagram = ({
             strokeWidth="0.535"
             d={path}
           ></path>
-          {showCrossOnLine(lineStates[id]) && (
+          {lineStates[id].state === "crossed" && (
             <path
               d={lineCrossPaths[id]}
               fill="black"
