@@ -38,10 +38,6 @@ function App() {
     }
   }
 
-  const triggerStateReset = () => {
-    this.mainScreen.resetState();
-  }
-
   useEffect(() => {
     fetch(`/api/syllogisms?tutorial_week=${encodeURIComponent(tutorialWeek)}`).then(res => res.json()).then(data => {
       setSyllogismsInTutorial(data.syllogisms);

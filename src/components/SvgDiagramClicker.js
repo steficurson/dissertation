@@ -48,7 +48,8 @@ const SvgDiagramClicker =  forwardRef((props, ref) => {
         },
         body: JSON.stringify({
           sectionStates: sectionStates,
-          lineStates: lineStates
+          lineStates: lineStates,
+          syllogism: props.syllogism
         })
       });
 

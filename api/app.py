@@ -1,4 +1,5 @@
 import time
+import syllogism_checker
 from flask import Flask, jsonify, request
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
@@ -94,8 +95,9 @@ def check_endpoint():
         data = request.get_json()
         sectionStates = data.get('sectionStates', {})
         lineStates = data.get('lineStates', {})
+        syllogism = data.get('syllogism', {})
 
-        result = check_answer(sectionStates, lineStates)
+        result = syllogism_checker.check_answer(sectionStates, lineStates, syllogism)
 
         return jsonify({
             'status': 'success',
@@ -107,16 +109,6 @@ def check_endpoint():
             'status': 'error',
             'message': str(e)
         }), 400
-
-def check_answer(sectionState, lineState):
-    # the BIG logic
-    # TODO
-    # hehehe
-    for section, state in sectionState.items():
-        print(f"received sectionState: {section} {state}")
-    for line, state in lineState.items():
-        print(f"received lineState: {line} {state}")
-    return {"message": "Success"}
 
 
 if __name__ == '__main__':
