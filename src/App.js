@@ -3,14 +3,24 @@ import './App.css';
 import SyllogismDisplay from './components/SyllogismDisplay';
 import MainScreen from './components/MainScreen';
 import Button from './components/Button';
+import ValidityInputButton from './components/ValidityInputButton';
 
 function App() {
   const [syllogismsInTutorial, setSyllogismsInTutorial] = useState([])
   const [currentSyllogism, setCurrentSyllogism] = useState("No syllogism retrieved.");
   const [tutorialWeek, setTutorialWeek] = useState(1);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
   const svgDiagramRef = useRef(null);
 
+
+  const handleAnswerSelection = (answer) => {
+    setSelectedAnswer(answer);
+  };
+
   const nextQuestion = () => {
+    console.log("Answer: ", selectedAnswer); //TODO: send answer to backend
+    setSelectedAnswer(null);
+
     const nrSyllogismsInTutorial = syllogismsInTutorial.length;
     if (nrSyllogismsInTutorial > 0) {
       const currentIndex = syllogismsInTutorial.indexOf(currentSyllogism);
@@ -27,6 +37,9 @@ function App() {
   }
 
   const prevQuestion = () => {
+    console.log("Answer: ", selectedAnswer); //TODO: send answer to backend
+    setSelectedAnswer(null);
+
     const nrSyllogismsInTutorial = syllogismsInTutorial.length;
     if (nrSyllogismsInTutorial > 0) {
       const currentIndex = syllogismsInTutorial.indexOf(currentSyllogism);
@@ -35,6 +48,10 @@ function App() {
       }
       const prevIndex =currentIndex - 1
       setCurrentSyllogism(syllogismsInTutorial[prevIndex]);
+
+      if (svgDiagramRef.current) {
+        svgDiagramRef.current.resetStates();
+      }
     }
   }
 
@@ -52,20 +69,25 @@ function App() {
 
   return (
     <div className="App relative h-screen">
-          <MainScreen syllogism={currentSyllogism} ref={svgDiagramRef}/>
-          <div className="absolute bottom-4 left-4">
-            <SyllogismDisplay syllogism={currentSyllogism}/>
-          </div>
-          <div className="absolute bottom-4 right-4">
-            {(syllogismsInTutorial.indexOf(currentSyllogism) !== 0) &&
-              <Button text={"Previous"} onClick={prevQuestion} disabled={false}/>
-            }
-            {(syllogismsInTutorial.indexOf(currentSyllogism) === syllogismsInTutorial.length - 1) ?
-              <Button text={"Submit"} onClick={null} disabled={false}/>
-            :
-              <Button text={"Next"}  onClick={nextQuestion} disabled={false}/>
-            }
-          </div>
+      <MainScreen syllogism={currentSyllogism} ref={svgDiagramRef}/>
+      <div className="absolute bottom-4 left-4">
+        <SyllogismDisplay syllogism={currentSyllogism}/>
+      </div>
+      <div className="absolute bottom-4 right-4 flex flex-col items-end">
+        <div className="mb-4">
+        <ValidityInputButton handleClick={handleAnswerSelection} selectedAnswer={selectedAnswer}/>
+        </div>
+        <div className="flex justify-end">
+          {(syllogismsInTutorial.indexOf(currentSyllogism) !== 0) &&
+            <Button text={"Previous"} onClick={prevQuestion} disabled={false} className="mr-2"/>
+          }
+          {(syllogismsInTutorial.indexOf(currentSyllogism) === syllogismsInTutorial.length - 1) ?
+            <Button text={"Submit"} onClick={null} disabled={selectedAnswer === null}/>
+          :
+            <Button text={"Next"}  onClick={nextQuestion} disabled={selectedAnswer === null}/>
+          }
+        </div>
+      </div>
     </div>
   );
 }

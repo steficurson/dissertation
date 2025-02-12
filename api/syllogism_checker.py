@@ -1,3 +1,13 @@
+class Syllogism:
+    def __init__(self, json_syllogism):
+        self.major_term = json_syllogism["major_term"]
+        self.minor_term = json_syllogism["minor_term"]
+        self.middle_term = json_syllogism["middle_term"]
+        self.premise1 = json_syllogism["premise1"]
+        self.premise2 = json_syllogism["premise2"]
+        self.conclusion = json_syllogism["conclusion"]
+        self.mood = ""
+        self.figure = -1
 
 def find_form(proposition):
     firstWord = proposition.split()[0]
@@ -6,7 +16,7 @@ def find_form(proposition):
     if firstWord == "No":
         return "E"
     if firstWord == "Some":
-        if proposition.contains("not"):
+        if "not" in proposition:
             return "O"
         else:
             return "I"
@@ -38,35 +48,25 @@ def find_figure(major_term, minor_term, middle_term, premise1, premise2):
         raise ValueError("Syllogism is not in standard form")
 
 def parse_syllogism(syllogism):
-    major_term = syllogism["major_term"] #aka predicate
-    minor_term = syllogism["minor_term"] #aka subject
-    middle_term = syllogism["middle_term"]
-
-    premise1 = syllogism["premise1"]
-    premise2 = syllogism["premise2"]
-    conclusion = syllogism["conclusion"]
-
     #Find form of each proposition
-    premise1_form = find_form(premise1)
-    premise2_form = find_form(premise2)
-    conclusion_form = find_form(conclusion)
-
+    premise1_form = find_form(syllogism.premise1)
+    premise2_form = find_form(syllogism.premise2)
+    conclusion_form = find_form(syllogism.conclusion)
     mood = premise1_form + premise2_form + conclusion_form
 
     #Find figure of syllogism
-    figure = find_figure(major_term, minor_term, middle_term, premise1, premise2)
-    print(f"Figure: {figure}")
-    print(f"Mood: {mood}")
+    figure = find_figure(syllogism.major_term, syllogism.minor_term, syllogism.middle_term, syllogism.premise1, syllogism.premise2)
+    print(f"Figure: {figure} and mood: {mood}")
+    syllogism.figure = figure
+    syllogism.mood = mood
 
-    return figure, mood
-
-def check_answer(sectionState, lineState, syllogism):
+def check_answer(sectionState, lineState, json_syllogism):
     for section, state in sectionState.items():
         print(f"received sectionState: {section} {state}")
     for line, state in lineState.items():
         print(f"received lineState: {line} {state}")
-    print(f"received syllogism: {syllogism}")
+    syllogism = Syllogism(json_syllogism)
 
-    figure, mood = parse_syllogism(syllogism)
+    parse_syllogism(syllogism)
 
     return {"message": "Success"}

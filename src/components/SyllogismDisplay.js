@@ -20,7 +20,7 @@ const SyllogismDisplay = (props) => {
         {render_as_text(props.syllogism)}
         </h1>
     </div>
-  );
+  )
 }
 
 export default SyllogismDisplay;
