@@ -4,6 +4,7 @@ import SyllogismDisplay from './components/SyllogismDisplay';
 import MainScreen from './components/MainScreen';
 import Button from './components/Button';
 import ValidityInputButton from './components/ValidityInputButton';
+import HelpButton from './components/HelpButton';
 
 function App() {
   const [syllogismsInTutorial, setSyllogismsInTutorial] = useState([])
@@ -70,13 +71,16 @@ function App() {
   return (
     <div className="App relative h-screen">
       <MainScreen syllogism={currentSyllogism} ref={svgDiagramRef}/>
+      <div className="absolute top-4 left-4">
+        <HelpButton/>
+      </div>
       <div className="absolute bottom-4 left-4">
         <SyllogismDisplay syllogism={currentSyllogism}/>
-      </div>
-      <div className="absolute bottom-4 right-4 flex flex-col items-end">
-        <div className="mb-4">
+        <div className="mt-4">
         <ValidityInputButton handleClick={handleAnswerSelection} selectedAnswer={selectedAnswer}/>
         </div>
+      </div>
+      <div className="absolute bottom-4 right-4 flex flex-col items-end">
         <div className="flex justify-end">
           {(syllogismsInTutorial.indexOf(currentSyllogism) !== 0) &&
             <Button text={"Previous"} onClick={prevQuestion} disabled={false} className="mr-2"/>

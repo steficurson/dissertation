@@ -5,7 +5,7 @@ const Button = (props) => {
   return(
     <div className="relative inline-block group">
       {props.disabled && (
-        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 text-sm text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
+        <div className="absolute bottom-full w-32 text-wrap left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 text-sm text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
           Select an answer to continue
         </div>
       )}
