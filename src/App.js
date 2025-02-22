@@ -10,51 +10,72 @@ function App() {
   const [syllogismsInTutorial, setSyllogismsInTutorial] = useState([])
   const [currentSyllogism, setCurrentSyllogism] = useState("No syllogism retrieved.");
   const [tutorialWeek, setTutorialWeek] = useState(1);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
+
+  const [questionStates, setQuestionStates] = useState([]);
+  const [currentSelectedAnswer, setCurrentSelectedAnswer] = useState(null);
   const svgDiagramRef = useRef(null);
 
 
   const handleAnswerSelection = (answer) => {
-    setSelectedAnswer(answer);
+    setCurrentSelectedAnswer(answer);
   };
 
-  const nextQuestion = () => {
-    console.log("Answer: ", selectedAnswer); //TODO: send answer to backend
-    setSelectedAnswer(null);
+  const updateCurrentQuestionState = (index, sectionStates, lineStates, selectedAnswer) => {
+    console.log("Updating question state: ", index);
+    setQuestionStates(prevStates => {
+      const newStates = [...prevStates];
+      newStates[index] = { sectionStates, lineStates, selectedAnswer };
+      return newStates;
+    });
+  };
 
-    const nrSyllogismsInTutorial = syllogismsInTutorial.length;
-    if (nrSyllogismsInTutorial > 0) {
-      const currentIndex = syllogismsInTutorial.indexOf(currentSyllogism);
-      if (currentIndex === syllogismsInTutorial.length - 1) {
-        return;
-      }
+
+  const nextQuestion = () => {
+    console.log("Answer: ", currentSelectedAnswer); //TODO: send answer to backend
+    const currentIndex = syllogismsInTutorial.indexOf(currentSyllogism);
+    updateCurrentQuestionState(currentIndex, svgDiagramRef.current.sectionStates, svgDiagramRef.current.lineStates, currentSelectedAnswer);
+
+    if (syllogismsInTutorial.length > 0 && currentIndex < syllogismsInTutorial.length) {
       const nextIndex = (currentIndex + 1);
+      restoreQuestionState(nextIndex);
       setCurrentSyllogism(syllogismsInTutorial[nextIndex]);
 
-      if (svgDiagramRef.current) {
-        svgDiagramRef.current.resetStates();
-      }
+      // if (svgDiagramRef.current) {
+      //   svgDiagramRef.current.resetStates(true); //Also exports to backend
+      // }
     }
   }
 
   const prevQuestion = () => {
-    console.log("Answer: ", selectedAnswer); //TODO: send answer to backend
-    setSelectedAnswer(null);
+    console.log("Answer: ", currentSelectedAnswer); //TODO: send answer to backend
+    const currentIndex = syllogismsInTutorial.indexOf(currentSyllogism);
+    updateCurrentQuestionState(currentIndex, svgDiagramRef.current.sectionStates, svgDiagramRef.current.lineStates, currentSelectedAnswer);
 
-    const nrSyllogismsInTutorial = syllogismsInTutorial.length;
-    if (nrSyllogismsInTutorial > 0) {
-      const currentIndex = syllogismsInTutorial.indexOf(currentSyllogism);
-      if (currentIndex === 0) {
-        return;
-      }
-      const prevIndex =currentIndex - 1
+    if (syllogismsInTutorial.length > 0 && currentIndex > 0) {
+      const prevIndex = currentIndex - 1
+      restoreQuestionState(prevIndex);
       setCurrentSyllogism(syllogismsInTutorial[prevIndex]);
 
-      if (svgDiagramRef.current) {
-        svgDiagramRef.current.resetStates();
-      }
+      // if (svgDiagramRef.current) {
+      //   svgDiagramRef.current.resetStates(true); //Also exports to backend
+      // }
     }
   }
+
+  const restoreQuestionState = (index) => {
+    if (questionStates.length > 0) {
+      const state = questionStates[index];
+      if (state) { //if the question has been (partially) answered before
+        const { sectionStates, lineStates, selectedAnswer } = state;
+        svgDiagramRef.current.setSectionStates(sectionStates);
+        svgDiagramRef.current.setLineStates(lineStates);
+        setCurrentSelectedAnswer(selectedAnswer);
+        return; //exit early so we don't reset the states
+      }
+    }
+    svgDiagramRef.current.resetStates(true);
+    setCurrentSelectedAnswer(null);
+  };
 
   useEffect(() => {
     fetch(`/api/syllogisms?tutorial_week=${encodeURIComponent(tutorialWeek)}`).then(res => res.json()).then(data => {
@@ -77,7 +98,7 @@ function App() {
       <div className="absolute bottom-4 left-4">
         <SyllogismDisplay syllogism={currentSyllogism}/>
         <div className="mt-4">
-        <ValidityInputButton handleClick={handleAnswerSelection} selectedAnswer={selectedAnswer}/>
+        <ValidityInputButton handleClick={handleAnswerSelection} selectedAnswer={currentSelectedAnswer}/>
         </div>
       </div>
       <div className="absolute bottom-4 right-4 flex flex-col items-end">
@@ -86,9 +107,9 @@ function App() {
             <Button text={"Previous"} onClick={prevQuestion} disabled={false} className="mr-2"/>
           }
           {(syllogismsInTutorial.indexOf(currentSyllogism) === syllogismsInTutorial.length - 1) ?
-            <Button text={"Submit"} onClick={null} disabled={selectedAnswer === null}/>
+            <Button text={"Submit"} onClick={null} disabled={currentSelectedAnswer === null}/>
           :
-            <Button text={"Next"}  onClick={nextQuestion} disabled={selectedAnswer === null}/>
+            <Button text={"Next"}  onClick={nextQuestion} disabled={currentSelectedAnswer === null}/>
           }
         </div>
       </div>

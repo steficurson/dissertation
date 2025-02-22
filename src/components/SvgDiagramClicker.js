@@ -35,6 +35,7 @@ const initialLineState = Object.entries(SVG_LINE_PATHS).reduce(
     {}
   );
 
+
 const SvgDiagramClicker =  forwardRef((props, ref) => {
   const [sectionStates, setSectionStates] = useState(initialSectionState);
   const [lineStates, setLineStates] = useState(initialLineState);
@@ -61,15 +62,21 @@ const SvgDiagramClicker =  forwardRef((props, ref) => {
     }
   };
 
-  const resetStates = () => {
-    exportStates();
+  const resetStates = (shouldExport) => {
+    if (shouldExport) {
+      exportStates();
+    }
     setSectionStates(initialSectionState);
     setLineStates(initialLineState);
   };
 
    // expose reset method to parent
    useImperativeHandle(ref, () => ({
-    resetStates
+    resetStates,
+    setSectionStates,
+    setLineStates,
+    sectionStates,
+    lineStates
   }));
 
   const sectionClickHandler = (partId) => {

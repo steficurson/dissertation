@@ -44,7 +44,7 @@ const Tutorial = ({ isOpen, onClose }) => {
       </div>
 
       <div className="w-full mt-2">
-        <h2 className="text-l font-bold">ASubmitting your answer</h2>
+        <h2 className="text-l font-bold">Submitting your answer</h2>
         <p>Once you have completed the Venn diagram, select whether you think the syllogism is valid.</p>
         <p>You can then move onto the next question; you can return to previous questions before submission.</p>
       </div>
