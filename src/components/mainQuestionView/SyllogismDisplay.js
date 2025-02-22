@@ -1,5 +1,5 @@
 import React from 'react';
-import '../App.css'
+import '../../App.css'
 
 
 const SyllogismDisplay = (props) => {
@@ -15,8 +15,8 @@ const SyllogismDisplay = (props) => {
   }
 
   return(
-    <div className="p-6 bg-white rounded-xl shadow-lg flex items-center gap-x-6 max-w-160">
-        <h1 className="text-3xl text-black">
+    <div className="p-6 bg-white rounded-xl shadow-lg items-center max-w-100">
+        <h1 className="text-3xl items-center text-black">
         {render_as_text(props.syllogism)}
         </h1>
     </div>

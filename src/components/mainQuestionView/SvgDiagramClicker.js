@@ -64,7 +64,7 @@ const SvgDiagramClicker =  forwardRef((props, ref) => {
 
   const resetStates = (shouldExport) => {
     if (shouldExport) {
-      exportStates();
+      exportStates(); //TODO: don't call this here, should be called at the end
     }
     setSectionStates(initialSectionState);
     setLineStates(initialLineState);

@@ -1,12 +1,10 @@
 import React from 'react';
-import '../App.css'
+import '../../App.css';
 
 const Button = (props) => {
-  const getButtonClass = (text) => {
-    const baseClass = "w-32 ml-2 mr-2 h-12 text-2xl text-white font-bold py-2 px-4 rounded disabled:bg-gray-400 disabled:cursor-not-allowed";
-    const textClass = text === "Previous" ? "bg-blue-400 hover:bg-blue-600" : "bg-blue-500 hover:bg-blue-700";
-    return `${baseClass} ${textClass}`;
-  }
+  const getTextClass = (text) => {
+    return text == "Previous" ? "noselect" : "noselect font-bold";
+    }
 
   return(
     <div className="relative inline-block group">
@@ -18,10 +16,9 @@ const Button = (props) => {
       <button
         onClick={props.onClick}
         disabled={props.disabled}
-        className={getButtonClass(props.text)
-      }
+        className={"w-32 ml-2 mr-2 h-12 text-2xl bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"}
       >
-        <p className="noselect">{props.text}</p>
+        <p className={getTextClass(props.text)}>{props.text}</p>
       </button>
     </div>
   );

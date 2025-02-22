@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
-import clickSectionDemo from '../images/ClickSectionDemo.gif';
-import clickLineDemo from '../images/ClickLineDemo.gif';
+import clickSectionDemo from '../../images/ClickSectionDemo.gif';
+import clickLineDemo from '../../images/ClickLineDemo.gif';
 
 const Tutorial = ({ isOpen, onClose }) => {
   return (
