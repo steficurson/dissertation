@@ -1,15 +1,14 @@
-from models import db, Syllogism, Tutorial
-from app import app
+from models import db, Question, Tutorial
 
 def seed_data():
-    with app.app_context():
         if Tutorial.query.first() is None:
-                tutorial1 = Tutorial(week=1)
-                tutorial2 = Tutorial(week=2)
-                db.session.add_all([tutorial1, tutorial2])
+                tutorial1 = Tutorial(week=1, open=True, has_submission=False)
+                tutorial2 = Tutorial(week=2, open=True, has_submission=False)
+                tutorial3 = Tutorial(week=3, open=False, has_submission=False)
+                db.session.add_all([tutorial1, tutorial2, tutorial3])
                 db.session.commit()
-        if Syllogism.query.first() is None:
-                barbara_example = Syllogism(
+        if Question.query.first() is None:
+                barbara_example = Question(
                         tutorial_id=1,
                         premise1='All animals are mortals',
                         premise2='All humans are animals',
@@ -19,7 +18,7 @@ def seed_data():
                         middle_term='animals',
                         valid=True
                 )
-                bocardo_example = Syllogism(
+                bocardo_example = Question(
                         tutorial_id=1,
                         premise1='Some cats are not ginger',
                         premise2='All cats are animals',
@@ -29,8 +28,8 @@ def seed_data():
                         middle_term='cats',
                         valid=True
                 )
-                celarent_example = Syllogism(
-                        tutorial_id=1,
+                celarent_example = Question(
+                        tutorial_id=2,
                         premise1='No rectangles are circles',
                         premise2='All squares are rectangles',
                         conclusion='No squares are circles',
@@ -39,7 +38,17 @@ def seed_data():
                         middle_term='rectangles',
                         valid=True
                 )
-                db.session.add_all([barbara_example, bocardo_example, celarent_example])
+                false_example_1 = Question(
+                        tutorial_id=1,
+                        premise1='All bananas are fruit',
+                        premise2='Some fruit are yellow',
+                        conclusion='All bananas are yellow',
+                        major_term='circles',
+                        minor_term='squares',
+                        middle_term='rectangles',
+                        valid=False
+                )
+                db.session.add_all([barbara_example, bocardo_example, celarent_example, false_example_1])
                 db.session.commit()
 
 if __name__ == '__main__':

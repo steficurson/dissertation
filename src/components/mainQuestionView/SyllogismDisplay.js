@@ -16,7 +16,7 @@ const SyllogismDisplay = (props) => {
 
   return(
     <div className="p-6 bg-white rounded-xl shadow-lg items-center max-w-100">
-        <h1 className="text-3xl items-center text-black">
+        <h1 className="items-center text-black" style= {{fontSize: "2.0vw"}}>
         {render_as_text(props.syllogism)}
         </h1>
     </div>

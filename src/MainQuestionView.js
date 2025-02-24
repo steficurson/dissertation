@@ -77,8 +77,8 @@ const MainQuestionView = () => {
   };
 
   useEffect(() => {
-    fetch(`/api/syllogisms?tutorial_week=${encodeURIComponent(tutorialWeek)}`).then(res => res.json()).then(data => {
-      setSyllogismsInTutorial(data.syllogisms);
+    fetch(`/api/questions?tutorial_week=${encodeURIComponent(tutorialWeek)}`).then(res => res.json()).then(data => {
+      setSyllogismsInTutorial(data.questions);
     });
   }, [tutorialWeek]);
 

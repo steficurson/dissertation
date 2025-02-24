@@ -5,7 +5,8 @@ from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from flask_cors import CORS
 
-from models import db, Student, Syllogism, Tutorial
+from models import db, Student, Question, Tutorial, Answer, Submission
+from seed import seed_data
 
 app = Flask(__name__, static_folder='../build', static_url_path='/')
 
@@ -54,24 +55,24 @@ def get_tutorials():
         data_list.append(data)
     return jsonify({"tutorials": data_list})
 
-@app.route('/api/syllogisms', methods=['GET'])
-def get_syllogisms():
+@app.route('/api/questions', methods=['GET'])
+def get_questions():
     tutorial_week = request.args.get('tutorial_week', default=1, type=int)
-    syllogisms = Syllogism.query.filter_by(tutorial_id=tutorial_week).all()
+    questions = Question.query.filter_by(tutorial_id=tutorial_week).all()
     data_list = []
-    for syllogism in syllogisms:
+    for question in questions:
         data = {}
-        data["syllogism_id"] = syllogism.syllogism_id
-        data["tutorial_id"] = syllogism.tutorial_id
-        data["premise1"] = syllogism.premise1
-        data["premise2"] = syllogism.premise2
-        data["conclusion"] = syllogism.conclusion
-        data["major_term"] = syllogism.major_term
-        data["minor_term"] = syllogism.minor_term
-        data["middle_term"] = syllogism.middle_term
-        data["valid"] = syllogism.valid
+        data["question_id"] = question.question_id
+        data["tutorial_id"] = question.tutorial_id
+        data["premise1"] = question.premise1
+        data["premise2"] = question.premise2
+        data["conclusion"] = question.conclusion
+        data["major_term"] = question.major_term
+        data["minor_term"] = question.minor_term
+        data["middle_term"] = question.middle_term
+        data["valid"] = question.valid
         data_list.append(data)
-    return jsonify({"syllogisms": data_list})
+    return jsonify({"questions": data_list})
 
 @app.route('/api/students', methods=['POST'])
 def create_student():
@@ -114,7 +115,9 @@ def check_endpoint():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+        seed_data()
         app.run(debug=True)
+
 
 
 
