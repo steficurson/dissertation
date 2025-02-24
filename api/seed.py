@@ -40,12 +40,12 @@ def seed_data():
                 )
                 false_example_1 = Question(
                         tutorial_id=1,
-                        premise1='All bananas are fruit',
-                        premise2='Some fruit are yellow',
+                        premise1='Some fruit are yellow',
+                        premise2='All bananas are fruit',
                         conclusion='All bananas are yellow',
-                        major_term='circles',
-                        minor_term='squares',
-                        middle_term='rectangles',
+                        major_term='yellow',
+                        minor_term='bananas',
+                        middle_term='fruit',
                         valid=False
                 )
                 db.session.add_all([barbara_example, bocardo_example, celarent_example, false_example_1])
