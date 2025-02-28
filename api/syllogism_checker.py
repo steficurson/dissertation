@@ -14,26 +14,28 @@ class Syllogism:
 class Answer:
     def __init__(self):
         self.section_state = {
-        "A": "DEFAULT",
-        "B": "DEFAULT",
-        "C": "DEFAULT",
-        "AB": "DEFAULT",
-        "AC": "DEFAULT",
-        "BC": "DEFAULT",
-        "ABC": "DEFAULT"
+        "A": "default",
+        "B": "default",
+        "C": "default",
+        "AB": "default",
+        "AC": "default",
+        "BC": "default",
+        "ABC": "default"
     }
         self.line_state = {
-        "AB_ABC": "DEFAULT",
-        "AC_ABC": "DEFAULT",
-        "BC_ABC": "DEFAULT",
-        "A_AB": "DEFAULT",
-        "B_AB": "DEFAULT",
-        "A_AC": "DEFAULT",
-        "C_AC": "DEFAULT",
-        "B_BC": "DEFAULT",
-        "C_BC": "DEFAULT"
+        "AB_ABC": "default",
+        "AC_ABC": "default",
+        "BC_ABC": "default",
+        "A_AB": "default",
+        "B_AB": "default",
+        "A_AC": "default",
+        "C_AC": "default",
+        "B_BC": "default",
+        "C_BC": "default"
     }
         self.valid = None
+
+
 
 def find_form(proposition):
     firstWord = proposition.split()[0]
@@ -83,7 +85,7 @@ def parse_syllogism(syllogism):
     #Find figure of syllogism
     syllogism.figure = find_figure(syllogism.major_term, syllogism.minor_term, syllogism.middle_term, syllogism.premise1, syllogism.premise2)
 
-def concat_sections(*args):
+def concat_sort(*args):
     string = ""
     for arg in args:
         string += arg
@@ -103,22 +105,17 @@ def apply_change_to_line(change, region, answer):
 
 def apply_premise(premise_form, subject, predicate, other, answer):
     if premise_form == 'A':
-        apply_change_to_section('SELECTED', subject, answer)
-        apply_change_to_section('SELECTED', concat_sections(subject, other), answer)
-        return
+        apply_change_to_section('selected', subject, answer)
+        apply_change_to_section('selected', concat_sort(subject, other), answer)
     elif premise_form == 'E':
-        apply_change_to_section('SELECTED', concat_sections(subject, predicate), answer)
-        apply_change_to_section('SELECTED', concat_sections(subject, predicate, other), answer)
-        return
+        apply_change_to_section('selected', concat_sort(subject, predicate), answer)
+        apply_change_to_section('selected', concat_sort(subject, predicate, other), answer)
     elif premise_form == 'I':
-        #apply_change_to_section('CROSSED', concat_lines(subject, predicate), answer)
-        #SP_SPO
-        #cross line INTERSECTING SUBJECT AND PREDICATE
-        return
+        apply_change_to_section('crossed', concat_sort(subject, predicate) + "_" + concat_sort(subject, predicate, other), answer)
     elif premise_form == 'O':
-        #cross line INTERSECTING SUBJECT AND OTHER
-        #S_SO
-        return
+        apply_change_to_section('crossed', subject + "_" + concat_sort(subject, predicate), answer)
+    else:
+        raise ValueError("Invalid premise form", premise_form)
 
 def check_answer(sectionState, lineState, json_syllogism):
     for section, state in sectionState.items():
@@ -153,11 +150,14 @@ def check_answer(sectionState, lineState, json_syllogism):
     elif syllogism.figure == 3 or syllogism.figure == 4: #i.e. second premise has form MIDDLE x MINOR
         apply_premise(syllogism.premise2_form, MIDDLE, MINOR, MAJOR, answer)
 
+    # need more logic here to iron out contradictions, i.e. moving crosses
+
     #Check if the student's answer matches the correct answer
+    #TODO: needs more nuance, give hollistic answer
     for section, state in sectionState.items():
-        if state != answer.section_state[section]:
+        if state.get('state') != answer.section_state[section]:
             return False
     for line, state in lineState.items():
-        if state != answer.line_state[line]:
+        if state.get('state') != answer.line_state[line]:
             return False
     return True
