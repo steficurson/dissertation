@@ -1,6 +1,6 @@
 import unittest
 
-from syllogism_checker import check_answer
+from utils.syllogism_checker import check_answer
 
 class TestSyllogismChecker(unittest.TestCase):
     def test_check_answer_barbara_should_return_true(self):

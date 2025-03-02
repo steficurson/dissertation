@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-import './App.css';
+import './styles/App.css';
 
 import SyllogismDisplay from './components/mainQuestionView/SyllogismDisplay';
 import MainScreen from './components/mainQuestionView/MainScreen';

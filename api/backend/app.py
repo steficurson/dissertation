@@ -1,5 +1,5 @@
 import time
-import syllogism_checker
+import utils.syllogism_checker as syllogism_checker
 from flask import Flask, jsonify, request
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
