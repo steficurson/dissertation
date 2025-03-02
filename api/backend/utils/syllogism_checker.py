@@ -1,6 +1,5 @@
 from syllogism import Syllogism
 from answer import Answer
-from state_enums import SectionState, LineState
 
 def check_answer(sectionState, lineState, json_syllogism):
     for section, state in sectionState.items():
@@ -11,7 +10,7 @@ def check_answer(sectionState, lineState, json_syllogism):
 
     #Takes the text of the syllogism and parses it into a Syllogism object,
     #which contains the terms, figure and mood of the syllogism
-    Syllogism.parse()
+    syllogism.parse()
 
     #Initialise the states of our 'correct answer'
     answer = Answer()
@@ -36,13 +35,15 @@ def check_answer(sectionState, lineState, json_syllogism):
         answer.apply_premise(syllogism.premise2_form, MIDDLE, MINOR, MAJOR)
 
     # need more logic here to iron out contradictions, i.e. moving crosses
+    answer.resolve_inconsistencies()
 
     #Check if the student's answer matches the correct answer
     #TODO: needs more nuance, give hollistic answer
     for section, state in sectionState.items():
-        if state.get('state') != answer.section_state[section]:
+        if state.get('state') != answer.section_state[section].value:
             return False
     for line, state in lineState.items():
-        if state.get('state') != answer.line_state[line]:
+        if state.get('state') != answer.line_state[line].value:
             return False
+
     return True

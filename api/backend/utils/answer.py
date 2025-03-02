@@ -13,24 +13,24 @@ class Answer:
 
     def __init__(self):
         self.section_state = {
-        "A": "default",
-        "B": "default",
-        "C": "default",
-        "AB": "default",
-        "AC": "default",
-        "BC": "default",
-        "ABC": "default"
+        "A": SectionState.DEFAULT,
+        "B": SectionState.DEFAULT,
+        "C": SectionState.DEFAULT,
+        "AB": SectionState.DEFAULT,
+        "AC": SectionState.DEFAULT,
+        "BC": SectionState.DEFAULT,
+        "ABC": SectionState.DEFAULT
     }
         self.line_state = {
-        "AB_ABC": "default",
-        "AC_ABC": "default",
-        "BC_ABC": "default",
-        "A_AB": "default",
-        "B_AB": "default",
-        "A_AC": "default",
-        "C_AC": "default",
-        "B_BC": "default",
-        "C_BC": "default"
+        "AB_ABC": LineState.DEFAULT,
+        "AC_ABC": LineState.DEFAULT,
+        "BC_ABC": LineState.DEFAULT,
+        "A_AB": LineState.DEFAULT,
+        "B_AB": LineState.DEFAULT,
+        "A_AC": LineState.DEFAULT,
+        "C_AC": LineState.DEFAULT,
+        "B_BC": LineState.DEFAULT,
+        "C_BC": LineState.DEFAULT
     }
         self.valid = None
 
@@ -60,19 +60,22 @@ class Answer:
             self.apply_change_to_section(SectionState.SELECTED, self.concat_sort(subject, predicate))
             self.apply_change_to_section(SectionState.SELECTED, self.concat_sort(subject, predicate, other))
         elif premise_form == 'I':
-            self.apply_change_to_line(SectionState.CROSSED, self.concat_sort(subject, predicate) + "_" + self.concat_sort(subject, predicate, other))
+            self.apply_change_to_line(LineState.CROSSED, self.concat_sort(subject, predicate) + "_" + self.concat_sort(subject, predicate, other))
         elif premise_form == 'O':
-            self.apply_change_to_line(SectionState.CROSSED, subject + "_" + self.concat_sort(subject, predicate))
+            self.apply_change_to_line(LineState.CROSSED, subject + "_" + self.concat_sort(subject, other))
         else:
             raise ValueError("Invalid premise form", premise_form)
 
     def move_cross(self, line, empty_section): #TODO
-        return
+        line_sections = line.split("_")
+        non_empty_section = line_sections[0] if empty_section == line_sections[1] else line_sections[1]
+        self.apply_change_to_line(LineState.DEFAULT, line)
+        self.apply_change_to_section(SectionState.CROSSED, non_empty_section)
 
     #If a section is empty but borders a crossed line, move the cross to the other section
     def resolve_inconsistencies(self):
-        for section, state in self.section_state.items():
-            if state == SectionState.SELECTED:
-                for line, state in self.adjacent_lines[section]:
-                    if state == LineState.CROSSED:
+        for section, sectionState in self.section_state.items():
+            if sectionState == SectionState.SELECTED:
+                for line in self.adjacent_lines[section]:
+                    if self.line_state[line] == LineState.CROSSED:
                         self.move_cross(line, section)
