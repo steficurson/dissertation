@@ -6,10 +6,28 @@ class Syllogism:
         self.premise1 = json_syllogism["premise1"]
         self.premise2 = json_syllogism["premise2"]
         self.conclusion = json_syllogism["conclusion"]
+        self.mood = ""
         self.premise1_form = ""
         self.premise2_form = ""
         self.conclusion_form = ""
         self.figure = -1
+
+    #Checks if the syllogism is one of the 15 valid forms
+    #No existential assumption allowed
+    def is_valid(self):
+        if self.figure == -1 or self.mood == "":
+            self.parse()
+        match (self.figure):
+            case 1:
+                return self.mood in ["AAA", "EAE", "AII", "EIO"]
+            case 2:
+                return self.mood in ["AEE", "EAE", "AOO", "EIO"]
+            case 3:
+                return self.mood in ["AII", "IAI", "EIO", "OAO"]
+            case 4:
+                return self.mood in ["AEE", "IAI", "EIO"]
+            case _:
+                raise ValueError("Invalid figure")
 
     #Finds the form of a proposition (A, E, I, or O) given its text
     def find_form(self, proposition):
@@ -53,10 +71,9 @@ class Syllogism:
             raise ValueError("Syllogism is not in standard form")
 
     def parse(self):
-      self.premise1_form = self.find_form(self.premise1)
-      self.premise2_form = self.find_form(self.premise2)
-      self.conclusion_form = self.find_form(self.conclusion)
-
-      print(f"Mood is {self.premise1_form}{self.premise2_form}{self.conclusion_form}") #for debug, remove later
-      self.figure = self.find_figure(self.major_term, self.minor_term, self.middle_term, self.premise1, self.premise2)
+        self.premise1_form = self.find_form(self.premise1)
+        self.premise2_form = self.find_form(self.premise2)
+        self.conclusion_form = self.find_form(self.conclusion)
+        self.mood = self.premise1_form + self.premise2_form + self.conclusion_form
+        self.figure = self.find_figure(self.major_term, self.minor_term, self.middle_term, self.premise1, self.premise2)
 

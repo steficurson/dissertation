@@ -25,25 +25,6 @@ app.json.compact = False
 #    db.create_all()
 #    populate_tables(db)
 
-@app.route('/api/time')
-def get_current_time():
-    return {'time': time.time()}
-
-@app.route('/api/day')
-def get_current_day():
-    return {'day': time.strftime('%A')}
-
-@app.route('/api/students', methods=['GET'])
-def get_students():
-    students = Student.query.all()
-    data_list = []
-    for student in students:
-        data = {}
-        data["student_id"] = student.student_id
-        data["name"] = student.name
-        data_list.append(data)
-    return jsonify({"students": data_list}) #figure this out next
-
 @app.route('/api/tutorials', methods=['GET'])
 def get_tutorials():
     tutorials = Tutorial.query.all()
@@ -97,8 +78,9 @@ def check_endpoint():
         sectionStates = data.get('sectionStates', {})
         lineStates = data.get('lineStates', {})
         syllogism = data.get('syllogism', {})
+        valid = data.get('valid', None)
 
-        result = syllogism_checker.check_answer(sectionStates, lineStates, syllogism)
+        result = syllogism_checker.check_answer(sectionStates, lineStates, valid, syllogism)
 
         return jsonify({
             'status': 'success',

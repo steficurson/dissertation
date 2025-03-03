@@ -1,7 +1,8 @@
 from syllogism import Syllogism
 from answer import Answer
 
-def check_answer(sectionState, lineState, json_syllogism):
+
+def check_answer(sectionState, lineState, valid, json_syllogism):
     for section, state in sectionState.items():
         print(f"received sectionState: {section} {state}")
     for line, state in lineState.items():
@@ -11,6 +12,7 @@ def check_answer(sectionState, lineState, json_syllogism):
     #Takes the text of the syllogism and parses it into a Syllogism object,
     #which contains the terms, figure and mood of the syllogism
     syllogism.parse()
+    isValid = syllogism.is_valid()
 
     #Initialise the states of our 'correct answer'
     answer = Answer()
@@ -39,11 +41,17 @@ def check_answer(sectionState, lineState, json_syllogism):
 
     #Check if the student's answer matches the correct answer
     #TODO: needs more nuance, give hollistic answer
+
+    incorrectSections = {}
+    incorrectLines = {}
     for section, state in sectionState.items():
         if state.get('state') != answer.section_state[section].value:
-            return False
+            incorrectSections[section] = {"expected": answer.section_state[section].value, "actual": state.get('state')}
     for line, state in lineState.items():
         if state.get('state') != answer.line_state[line].value:
-            return False
+            incorrectLines[line] = {"expected": answer.line_state[line].value, "actual": state.get('state')}
 
-    return True
+    return {"main_answer_correct": syllogism.is_valid() == valid,
+        "incorrectSections": incorrectSections,
+        "incorrectLines": incorrectLines
+    }
