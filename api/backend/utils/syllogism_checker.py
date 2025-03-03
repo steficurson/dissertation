@@ -3,16 +3,11 @@ from answer import Answer
 
 
 def check_answer(sectionState, lineState, valid, json_syllogism):
-    for section, state in sectionState.items():
-        print(f"received sectionState: {section} {state}")
-    for line, state in lineState.items():
-        print(f"received lineState: {line} {state}")
     syllogism = Syllogism(json_syllogism)
 
     #Takes the text of the syllogism and parses it into a Syllogism object,
     #which contains the terms, figure and mood of the syllogism
     syllogism.parse()
-    isValid = syllogism.is_valid()
 
     #Initialise the states of our 'correct answer'
     answer = Answer()
@@ -36,12 +31,9 @@ def check_answer(sectionState, lineState, valid, json_syllogism):
     elif syllogism.figure == 3 or syllogism.figure == 4: #i.e. second premise has form MIDDLE x MINOR
         answer.apply_premise(syllogism.premise2_form, MIDDLE, MINOR, MAJOR)
 
-    # need more logic here to iron out contradictions, i.e. moving crosses
     answer.resolve_inconsistencies()
 
     #Check if the student's answer matches the correct answer
-    #TODO: needs more nuance, give hollistic answer
-
     incorrectSections = {}
     incorrectLines = {}
     for section, state in sectionState.items():

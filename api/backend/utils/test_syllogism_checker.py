@@ -199,6 +199,174 @@ class TestSyllogismChecker(unittest.TestCase):
         result = check_answer(sectionStates, lineStates, True, valid_syllogisms["bocardo"])
         self.assertEqual(self.is_correct(result), True)
 
+    def test_check_answer_datisi_should_return_true(self):
+        sectionStates = {
+            "A":{"state":"selected"},
+            "B":{"state":"default"},
+            "C":{"state":"default"},
+            "AB":{"state":"default"},
+            "AC":{"state":"selected"},
+            "BC":{"state":"default"},
+            "ABC":{"state":"crossed"}
+        }
+        lineStates = {
+            "AB_ABC":{"state":"default"},
+            "AC_ABC":{"state":"default"},
+            "BC_ABC":{"state":"default"},
+            "A_AB":{"state":"default"},
+            "B_AB":{"state":"default"},
+            "A_AC":{"state":"default"},
+            "C_AC":{"state":"default"},
+            "B_BC":{"state":"default"},
+            "C_BC":{"state":"default"}
+        }
+        result = check_answer(sectionStates, lineStates, True, valid_syllogisms["datisi"])
+        self.assertEqual(self.is_correct(result), True)
+
+    def test_check_answer_dimaris_should_return_true(self):
+        sectionStates = {
+            "A":{"state":"selected"},
+            "B":{"state":"default"},
+            "C":{"state":"default"},
+            "AB":{"state":"selected"},
+            "AC":{"state":"default"},
+            "BC":{"state":"default"},
+            "ABC":{"state":"crossed"}
+        }
+        lineStates = {
+            "AB_ABC":{"state":"default"},
+            "AC_ABC":{"state":"default"},
+            "BC_ABC":{"state":"default"},
+            "A_AB":{"state":"default"},
+            "B_AB":{"state":"default"},
+            "A_AC":{"state":"default"},
+            "C_AC":{"state":"default"},
+            "B_BC":{"state":"default"},
+            "C_BC":{"state":"default"}
+        }
+        result = check_answer(sectionStates, lineStates, True, valid_syllogisms["dimaris"])
+        self.assertEqual(self.is_correct(result), True)
+
+    def test_check_answer_cesare_should_return_true(self):
+        sectionStates = {
+            "A":{"state":"default"},
+            "B":{"state":"default"},
+            "C":{"state":"selected"},
+            "AB":{"state":"selected"},
+            "AC":{"state":"default"},
+            "BC":{"state":"selected"},
+            "ABC":{"state":"selected"}
+        }
+        lineStates = {
+            "AB_ABC":{"state":"default"},
+            "AC_ABC":{"state":"default"},
+            "BC_ABC":{"state":"default"},
+            "A_AB":{"state":"default"},
+            "B_AB":{"state":"default"},
+            "A_AC":{"state":"default"},
+            "C_AC":{"state":"default"},
+            "B_BC":{"state":"default"},
+            "C_BC":{"state":"default"}
+        }
+        result = check_answer(sectionStates, lineStates, True, valid_syllogisms["cesare"])
+        self.assertEqual(self.is_correct(result), True)
+
+    def test_check_answer_camenes_should_return_true(self):
+        sectionStates = {
+            "A":{"state":"default"},
+            "B":{"state":"selected"},
+            "C":{"state":"default"},
+            "AB":{"state":"default"},
+            "AC":{"state":"selected"},
+            "BC":{"state":"selected"},
+            "ABC":{"state":"selected"}
+        }
+        lineStates = {
+            "AB_ABC":{"state":"default"},
+            "AC_ABC":{"state":"default"},
+            "BC_ABC":{"state":"default"},
+            "A_AB":{"state":"default"},
+            "B_AB":{"state":"default"},
+            "A_AC":{"state":"default"},
+            "C_AC":{"state":"default"},
+            "B_BC":{"state":"default"},
+            "C_BC":{"state":"default"}
+        }
+        result = check_answer(sectionStates, lineStates, True, valid_syllogisms["camenes"])
+        self.assertEqual(self.is_correct(result), True)
+
+    def test_check_answer_festino_should_return_true(self):
+        sectionStates = {
+            "A":{"state":"default"},
+            "B":{"state":"default"},
+            "C":{"state":"default"},
+            "AB":{"state":"selected"},
+            "AC":{"state":"crossed"},
+            "BC":{"state":"default"},
+            "ABC":{"state":"selected"}
+        }
+        lineStates = {
+            "AB_ABC":{"state":"default"},
+            "AC_ABC":{"state":"default"},
+            "BC_ABC":{"state":"default"},
+            "A_AB":{"state":"default"},
+            "B_AB":{"state":"default"},
+            "A_AC":{"state":"default"},
+            "C_AC":{"state":"default"},
+            "B_BC":{"state":"default"},
+            "C_BC":{"state":"default"}
+        }
+        result = check_answer(sectionStates, lineStates, True, valid_syllogisms["festino"])
+        self.assertEqual(self.is_correct(result), True)
+
+    def test_check_answer_ferison_should_return_true(self):
+        sectionStates = {
+            "A":{"state":"default"},
+            "B":{"state":"default"},
+            "C":{"state":"default"},
+            "AB":{"state":"selected"},
+            "AC":{"state":"crossed"},
+            "BC":{"state":"default"},
+            "ABC":{"state":"selected"}
+        }
+        lineStates = {
+            "AB_ABC":{"state":"default"},
+            "AC_ABC":{"state":"default"},
+            "BC_ABC":{"state":"default"},
+            "A_AB":{"state":"default"},
+            "B_AB":{"state":"default"},
+            "A_AC":{"state":"default"},
+            "C_AC":{"state":"default"},
+            "B_BC":{"state":"default"},
+            "C_BC":{"state":"default"}
+        }
+        result = check_answer(sectionStates, lineStates, True, valid_syllogisms["ferison"])
+        self.assertEqual(self.is_correct(result), True)
+
+    def test_check_answer_fresison_should_return_true(self):
+        sectionStates = {
+            "A":{"state":"default"},
+            "B":{"state":"default"},
+            "C":{"state":"default"},
+            "AB":{"state":"selected"},
+            "AC":{"state":"crossed"},
+            "BC":{"state":"default"},
+            "ABC":{"state":"selected"}
+        }
+        lineStates = {
+            "AB_ABC":{"state":"default"},
+            "AC_ABC":{"state":"default"},
+            "BC_ABC":{"state":"default"},
+            "A_AB":{"state":"default"},
+            "B_AB":{"state":"default"},
+            "A_AC":{"state":"default"},
+            "C_AC":{"state":"default"},
+            "B_BC":{"state":"default"},
+            "C_BC":{"state":"default"}
+        }
+        result = check_answer(sectionStates, lineStates, True, valid_syllogisms["fresison"])
+        self.assertEqual(self.is_correct(result), True)
+
     # def test_check_answer_barbera_should_return_false(self):
     #     sectionStates = {
     #         "A":{"state":"selected"},
