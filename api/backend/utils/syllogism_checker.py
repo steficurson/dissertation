@@ -1,5 +1,5 @@
-from syllogism import Syllogism
-from answer import Answer
+from utils.syllogism import Syllogism
+from utils.answer import Answer
 
 
 def check_answer(sectionState, lineState, valid, json_syllogism):

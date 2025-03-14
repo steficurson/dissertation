@@ -40,26 +40,12 @@ const SvgDiagramClicker =  forwardRef((props, ref) => {
   const [sectionStates, setSectionStates] = useState(initialSectionState);
   const [lineStates, setLineStates] = useState(initialLineState);
 
-  const exportStates = async () => {
-    try {
-      const response = await fetch('/api/check', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          sectionStates: sectionStates,
-          lineStates: lineStates,
-          syllogism: props.syllogism
-        })
-      });
-
-      if (!response.ok) throw new Error('Export failed');
-      const result = await response.json();
-      console.log('Server response:', result);
-    } catch (error) {
-      console.error('Error exporting data:', error);
-    }
+  const exportStates = () => {
+    return JSON.stringify({
+      sectionStates: sectionStates,
+      lineStates: lineStates,
+      syllogism: props.syllogism
+    });
   };
 
   const resetStates = (shouldExport) => {

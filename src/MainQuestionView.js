@@ -27,14 +27,13 @@ const MainQuestionView = () => {
     console.log("Updating question state: ", index);
     setQuestionStates(prevStates => {
       const newStates = [...prevStates];
-      newStates[index] = { sectionStates, lineStates, selectedAnswer };
+      newStates[index] = { "index": index, sectionStates, lineStates, selectedAnswer };
       return newStates;
     });
   };
 
 
   const nextQuestion = () => {
-    console.log("Answer: ", currentSelectedAnswer); //TODO: send answer to backend
     const currentIndex = syllogismsInTutorial.indexOf(currentSyllogism);
     updateCurrentQuestionState(currentIndex, svgDiagramRef.current.sectionStates, svgDiagramRef.current.lineStates, currentSelectedAnswer);
 
@@ -46,7 +45,6 @@ const MainQuestionView = () => {
   }
 
   const prevQuestion = () => {
-    console.log("Answer: ", currentSelectedAnswer); //TODO: send answer to backend
     const currentIndex = syllogismsInTutorial.indexOf(currentSyllogism);
     updateCurrentQuestionState(currentIndex, svgDiagramRef.current.sectionStates, svgDiagramRef.current.lineStates, currentSelectedAnswer);
 
@@ -57,8 +55,27 @@ const MainQuestionView = () => {
     }
   }
 
-  const submitAnswers = () => {
-      //TODO: send all answers to backend to all question states
+  const submitAnswers = async () => {
+    //update the state of the current question before submitting
+    const currentIndex = syllogismsInTutorial.indexOf(currentSyllogism);
+    updateCurrentQuestionState(currentIndex, svgDiagramRef.current.sectionStates, svgDiagramRef.current.lineStates, currentSelectedAnswer);
+
+    console.log("Submitting answers: ", JSON.stringify(questionStates));
+    try {
+      const response = await fetch('/api/check', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(questionStates),
+      });
+
+      if (!response.ok) throw new Error('Export failed');
+      const result = await response.json();
+      console.log('Server response:', result);
+    } catch (error) {
+      console.error('Error exporting data:', error);
+    }
   }
 
   const restoreQuestionState = (index) => {
@@ -107,7 +124,7 @@ const MainQuestionView = () => {
           }
           {(syllogismsInTutorial.indexOf(currentSyllogism) === syllogismsInTutorial.length - 1) ?
           <Link to="/submitted">
-            <Button text={"Submit"} onClick={null} disabled={currentSelectedAnswer === null}/>
+            <Button text={"Submit"} onClick={submitAnswers} disabled={currentSelectedAnswer === null}/>
           </Link>
           :
             <Button text={"Next"}  onClick={nextQuestion} disabled={currentSelectedAnswer === null}/>

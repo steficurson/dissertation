@@ -1,4 +1,4 @@
-from state_enums import SectionState, LineState
+from utils.state_enums import SectionState, LineState
 
 class Answer:
     adjacent_lines = {
