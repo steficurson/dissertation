@@ -73,18 +73,22 @@ def index():
 
 @app.route('/api/check', methods=['POST'])
 def check_endpoint():
+    data = {}
     try:
         data = request.get_json()
-        sectionStates = data.get('sectionStates', {})
-        lineStates = data.get('lineStates', {})
-        syllogism = data.get('syllogism', {})
-        valid = data.get('valid', None)
-
-        result = syllogism_checker.check_answer(sectionStates, lineStates, valid, syllogism)
+        #its now for each index!
+        for question in data:
+            index = question.get('index', None)
+            sectionStates = question.get('sectionStates', {})
+            lineStates = question.get('lineStates', {})
+            syllogism = question.get('syllogism', {})
+            valid = question.get('valid', None)
+            result = syllogism_checker.check_answer(sectionStates, lineStates, valid, syllogism)
+            data[index]['result'] = result
 
         return jsonify({
             'status': 'success',
-            'result': result
+            'result': data
         }), 200
 
     except Exception as e:

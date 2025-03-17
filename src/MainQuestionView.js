@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import './styles/App.css';
 
@@ -17,17 +17,17 @@ const MainQuestionView = () => {
   const [questionStates, setQuestionStates] = useState([]);
   const [currentSelectedAnswer, setCurrentSelectedAnswer] = useState(null);
   const svgDiagramRef = useRef(null);
-
+  const navigate = useNavigate();
 
   const handleAnswerSelection = (answer) => {
     setCurrentSelectedAnswer(answer);
   };
 
-  const updateCurrentQuestionState = (index, sectionStates, lineStates, selectedAnswer) => {
+  const updateCurrentQuestionState = (index, sectionStates, lineStates, selectedAnswer, syllogism) => {
     console.log("Updating question state: ", index);
     setQuestionStates(prevStates => {
       const newStates = [...prevStates];
-      newStates[index] = { "index": index, sectionStates, lineStates, selectedAnswer };
+      newStates[index] = { "index": index, sectionStates, lineStates, selectedAnswer, syllogism };
       return newStates;
     });
   };
@@ -35,7 +35,7 @@ const MainQuestionView = () => {
 
   const nextQuestion = () => {
     const currentIndex = syllogismsInTutorial.indexOf(currentSyllogism);
-    updateCurrentQuestionState(currentIndex, svgDiagramRef.current.sectionStates, svgDiagramRef.current.lineStates, currentSelectedAnswer);
+    updateCurrentQuestionState(currentIndex, svgDiagramRef.current.sectionStates, svgDiagramRef.current.lineStates, currentSelectedAnswer, currentSyllogism);
 
     if (syllogismsInTutorial.length > 0 && currentIndex < syllogismsInTutorial.length) {
       const nextIndex = (currentIndex + 1);
@@ -73,6 +73,8 @@ const MainQuestionView = () => {
       if (!response.ok) throw new Error('Export failed');
       const result = await response.json();
       console.log('Server response:', result);
+
+      navigate('/submitted', { state: { result } });
     } catch (error) {
       console.error('Error exporting data:', error);
     }
@@ -123,9 +125,7 @@ const MainQuestionView = () => {
             <Button text={"Previous"} onClick={prevQuestion} disabled={false} className="mr-2"/>
           }
           {(syllogismsInTutorial.indexOf(currentSyllogism) === syllogismsInTutorial.length - 1) ?
-          <Link to="/submitted">
             <Button text={"Submit"} onClick={submitAnswers} disabled={currentSelectedAnswer === null}/>
-          </Link>
           :
             <Button text={"Next"}  onClick={nextQuestion} disabled={currentSelectedAnswer === null}/>
           }
