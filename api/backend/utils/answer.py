@@ -32,7 +32,7 @@ class Answer:
         "B_BC": LineState.DEFAULT,
         "C_BC": LineState.DEFAULT
     }
-        self.valid = None
+        self.selectedAnswer = None
 
     def concat_sort(self, *args):
         string = ""

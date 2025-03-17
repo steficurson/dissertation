@@ -82,8 +82,8 @@ def check_endpoint():
             sectionStates = question.get('sectionStates', {})
             lineStates = question.get('lineStates', {})
             syllogism = question.get('syllogism', {})
-            valid = question.get('valid', None)
-            result = syllogism_checker.check_answer(sectionStates, lineStates, valid, syllogism)
+            selectedAnswer = question.get('selectedAnswer', None)
+            result = syllogism_checker.check_answer(sectionStates, lineStates, selectedAnswer, syllogism)
             data[index]['result'] = result
 
         return jsonify({

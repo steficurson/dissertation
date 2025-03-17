@@ -2,7 +2,7 @@ from utils.syllogism import Syllogism
 from utils.answer import Answer
 
 
-def check_answer(sectionState, lineState, valid, json_syllogism):
+def check_answer(sectionState, lineState, selectedAnswer, json_syllogism):
     syllogism = Syllogism(json_syllogism)
 
     #Takes the text of the syllogism and parses it into a Syllogism object,
@@ -43,7 +43,7 @@ def check_answer(sectionState, lineState, valid, json_syllogism):
         if state.get('state') != answer.line_state[line].value:
             incorrectLines[line] = {"expected": answer.line_state[line].value, "actual": state.get('state')}
 
-    return {"main_answer_correct": syllogism.is_valid() == valid,
+    return {"main_answer_correct": syllogism.is_valid() == selectedAnswer,
         "incorrectSections": incorrectSections,
         "incorrectLines": incorrectLines
     }
