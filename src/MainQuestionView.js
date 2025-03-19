@@ -36,6 +36,7 @@ const MainQuestionView = () => {
   const nextQuestion = () => {
     const currentIndex = syllogismsInTutorial.indexOf(currentSyllogism);
     updateCurrentQuestionState(currentIndex, svgDiagramRef.current.sectionStates, svgDiagramRef.current.lineStates, currentSelectedAnswer, currentSyllogism);
+    console.log("Submitting answers: ", JSON.stringify(questionStates));
 
     if (syllogismsInTutorial.length > 0 && currentIndex < syllogismsInTutorial.length) {
       const nextIndex = (currentIndex + 1);
@@ -47,6 +48,7 @@ const MainQuestionView = () => {
   const prevQuestion = () => {
     const currentIndex = syllogismsInTutorial.indexOf(currentSyllogism);
     updateCurrentQuestionState(currentIndex, svgDiagramRef.current.sectionStates, svgDiagramRef.current.lineStates, currentSelectedAnswer);
+    console.log("Submitting answers: ", JSON.stringify(questionStates));
 
     if (syllogismsInTutorial.length > 0 && currentIndex > 0) {
       const prevIndex = currentIndex - 1
@@ -58,19 +60,23 @@ const MainQuestionView = () => {
   const submitAnswers = async () => {
     //update the state of the current question before submitting
     const currentIndex = syllogismsInTutorial.indexOf(currentSyllogism);
-    updateCurrentQuestionState(currentIndex, svgDiagramRef.current.sectionStates, svgDiagramRef.current.lineStates, currentSelectedAnswer);
+    const newQuestionStates = [...questionStates];
+    newQuestionStates[currentIndex] = { "index": currentIndex, sectionStates: svgDiagramRef.current.sectionStates, lineStates: svgDiagramRef.current.lineStates, selectedAnswer: currentSelectedAnswer, syllogism: currentSyllogism };
 
-    console.log("Submitting answers: ", JSON.stringify(questionStates));
+    console.log("Submitting answers: ", JSON.stringify(newQuestionStates));
     try {
       const response = await fetch('/api/check', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(questionStates),
+        body: JSON.stringify(newQuestionStates),
       });
 
-      if (!response.ok) throw new Error('Export failed');
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Server responded with error: ${errorText}`);
+      }
       const result = await response.json();
       console.log('Server response:', result);
 
