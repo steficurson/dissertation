@@ -72,7 +72,7 @@ def index():
     return app.send_static_file('index.html')
 
 @app.route('/api/check', methods=['POST'])
-def check_endpoint():
+def check_answers():
     data = {}
     try:
         data = request.get_json()
@@ -85,7 +85,7 @@ def check_endpoint():
             selectedAnswer = question.get('selectedAnswer', None)
             result = syllogism_checker.check_answer(sectionStates, lineStates, selectedAnswer, syllogism)
             data[index]['result'] = result
-
+        #save to db
         return jsonify({
             'status': 'success',
             'result': data
