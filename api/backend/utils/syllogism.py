@@ -46,24 +46,24 @@ class Syllogism:
 
     #Finds the subject of a proposition given its text
     def find_subject(self, proposition):
-        return proposition.split()[1] #change to accept multi-word
+        return proposition.split()[1]
 
     #Finds the figure of a syllogism (1, 2, 3 or 4)
-    def find_figure(self):
-        premise1_subject = self.find_subject(self.premise1)
-        premise2_subject = self.find_subject(self.premise2)
+    def find_figure(self, major_term, minor_term, middle_term, premise1, premise2):
+        premise1_subject = self.find_subject(premise1)
+        premise2_subject = self.find_subject(premise2)
 
-        if premise1_subject == self.middle_term:
-            if premise2_subject == self.minor_term:
+        if premise1_subject == middle_term:
+            if premise2_subject == minor_term:
                 return 1
-            elif premise2_subject == self.middle_term:
+            elif premise2_subject == middle_term:
                 return 3
             else:
                 raise ValueError("Syllogism is not in standard form") #could try to re-arrange form
-        elif premise1_subject == self.major_term:
-            if premise2_subject == self.minor_term:
+        elif premise1_subject == major_term:
+            if premise2_subject == minor_term:
                 return 2
-            elif premise2_subject == self.middle_term:
+            elif premise2_subject == middle_term:
                 return 4
             else:
                 raise ValueError("Syllogism is not in standard form")
@@ -75,5 +75,5 @@ class Syllogism:
         self.premise2_form = self.find_form(self.premise2)
         self.conclusion_form = self.find_form(self.conclusion)
         self.mood = self.premise1_form + self.premise2_form + self.conclusion_form
-        self.figure = self.find_figure()
+        self.figure = self.find_figure(self.major_term, self.minor_term, self.middle_term, self.premise1, self.premise2)
 
