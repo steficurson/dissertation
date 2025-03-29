@@ -40,7 +40,7 @@ const Submitted = () => {
               <ul class="list-disc list-inside">
               {Object.entries(question[1].incorrect_sections).map(([section, value]) => (
                 <li key={section}>
-                  Line {section} should have been <i>{value.expected}</i> but was marked as <i>{value.actual}</i>
+                  Section {section} should have been <i>{value.expected}</i> but was marked as <i>{value.actual}</i>
                 </li>
               ))}
               </ul>
@@ -62,7 +62,7 @@ const Submitted = () => {
         }
 
         <div>
-          <p className="text-m mt-4 font-bold">Suggested mark: {question[1].suggested_mark}</p>
+          <p className="text-m mt-4 font-bold">Suggested mark: {question[1].suggested_mark}/10</p>
         </div>
       </div>
     ));
