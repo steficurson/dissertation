@@ -2,9 +2,9 @@ from models import db, Question, Tutorial
 
 def seed_data():
         if Tutorial.query.first() is None:
-                tutorial1 = Tutorial(week=1, open=True, has_submission=False)
-                tutorial2 = Tutorial(week=2, open=True, has_submission=False)
-                tutorial3 = Tutorial(week=3, open=False, has_submission=False)
+                tutorial1 = Tutorial(week=1, open=True)
+                tutorial2 = Tutorial(week=2, open=True)
+                tutorial3 = Tutorial(week=3, open=False)
                 db.session.add_all([tutorial1, tutorial2, tutorial3])
                 db.session.commit()
         if Question.query.first() is None:

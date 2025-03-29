@@ -43,7 +43,25 @@ def check_answer(section_state, line_state, selected_answer, json_syllogism):
         if state.get('state') != answer.line_state[line].value:
             incorrect_lines[line] = {"expected": answer.line_state[line].value, "actual": state.get('state')}
 
-    return {"main_answer_correct": syllogism.is_valid() == selected_answer,
+    #Suggest a hollistic mark
+    nr_incorrect_sections_and_lines = len(incorrect_sections) + len(incorrect_lines)
+    main_answer_correct = syllogism.is_valid() == selected_answer
+    suggested_mark = -1
+    if main_answer_correct:
+        if nr_incorrect_sections_and_lines > 10:
+            suggested_mark = 0
+        else:
+            suggested_mark = 10 - nr_incorrect_sections_and_lines
+    else:
+        if nr_incorrect_sections_and_lines > 7:
+            suggested_mark = 0
+        else:
+            suggested_mark = 7 - nr_incorrect_sections_and_lines
+
+
+    return {"main_answer_correct": main_answer_correct,
         "incorrect_sections": incorrect_sections,
-        "incorrect_lines": incorrect_lines
+        "incorrect_lines": incorrect_lines,
+        "suggested_mark": suggested_mark,
+        "selected_answer": selected_answer
     }

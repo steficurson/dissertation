@@ -8,11 +8,14 @@ const HelpButton = (props) => {
     setIsModalOpen(!isModalOpen);
   };
 
-  return(
-    <div>
+  return (
+    <div className="relative">
+      <span
+        className="w-12 ml-2 mr-2 h-12 animate-customPing absolute rounded-full bg-gray-400 opacity-75 pointer-events-none"
+      ></span>
       <button
         onClick={toggleModal}
-        className="w-10 ml-2 mr-2 h-10 text-2xl bg-gray-500 font-bold text-white rounded-full hover:bg-gray-600"
+        className="w-12 ml-2 mr-2 h-12 text-3xl bg-gray-500 font-bold text-white rounded-full hover:bg-gray-600 relative z-10"
       >
         <p className="noselect">?</p>
       </button>
@@ -20,6 +23,7 @@ const HelpButton = (props) => {
       <HelpTutorial isOpen={isModalOpen} onClose={toggleModal} />
     </div>
   );
+
 }
 
 export default HelpButton;

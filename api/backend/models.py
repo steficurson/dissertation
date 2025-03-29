@@ -36,7 +36,6 @@ class Tutorial(db.Model):
     tutorial_id = db.Column(db.Integer, index=True, primary_key=True)
     week = db.Column(db.Integer, nullable=False, unique=True)
     open = db.Column(db.Boolean, nullable=False, unique=False)
-    has_submission = db.Column(db.Boolean, nullable=False, unique=False)
     questions = relationship('Question', backref='tutorial')
 
     __table_args__ = (
@@ -49,22 +48,21 @@ class Tutorial(db.Model):
 
 class Answer(db.Model):
     __tablename__ = 'answers'
-
-    answer_id = db.Column(db.Integer, index=True, primary_key=True)
-    submission_id = db.Column(db.Integer, db.ForeignKey('submissions.submission_id'), nullable=False)
-    question_id = db.Column(db.Integer, db.ForeignKey('questions.question_id'), primary_key=True)
-    answer = db.Column(db.String(500), nullable=False)
-    correct = db.Column(db.Boolean)
+    answer_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    submission_id = db.Column(db.Integer, db.ForeignKey('submissions.submission_id'))
+    question_id = db.Column(db.Integer, db.ForeignKey('questions.question_id'))
+    answer = db.Column(db.String(500))
+    automarker_feedback = db.Column(db.String(1000))
 
     def __repr__(self):
-        return '<Item %r>' % self.question_id
+        return f'<Answer submission_id={self.submission_id}, question_id={self.question_id}>'
 
 class Submission(db.Model):
     __tablename__ = 'submissions'
 
-    submission_id = db.Column(db.Integer, index=True, primary_key=True)
-    student_id = db.Column(db.String(8), db.ForeignKey('students.student_id'), primary_key=True)
-    tutorial_id = db.Column(db.Integer, db.ForeignKey('tutorials.tutorial_id'), primary_key=True)
+    submission_id = db.Column(db.Integer, index=True, primary_key=True, autoincrement=True)
+    student_id = db.Column(db.String(8), db.ForeignKey('students.student_id'))
+    tutorial_id = db.Column(db.Integer, db.ForeignKey('tutorials.tutorial_id'))
     answers = relationship('Answer', backref='submission')
 
     def __repr__(self):

@@ -1,4 +1,4 @@
-import time
+import json
 import utils.syllogism_checker as syllogism_checker
 from flask import Flask, jsonify, request
 from flask_bcrypt import Bcrypt
@@ -20,10 +20,6 @@ db.init_app(app)
 
 bcrypt = Bcrypt(app)
 app.json.compact = False
-
-#with app.app_context():
-#    db.create_all()
-#    populate_tables(db)
 
 @app.route('/api/tutorials', methods=['GET'])
 def get_tutorials():
@@ -55,12 +51,16 @@ def get_questions():
         data_list.append(data)
     return jsonify({"questions": data_list})
 
+#This endpoint is not called in current application, but would be used in future work on student authentication system
 @app.route('/api/students', methods=['POST'])
 def create_student():
     data = request.get_json()
     student_id = data['student_id']
     name = data['name']
-    #validation stuff
+
+    existing_student = Student.query.filter_by(student_id=student_id).first()
+    if existing_student:
+        return jsonify({'error': 'Student ID already exists'}), 400
 
     new_student = Student(student_id=student_id, name=name)
     db.session.add(new_student)
@@ -73,22 +73,41 @@ def index():
 
 @app.route('/api/check', methods=['POST'])
 def check_answers():
-    data = {}
+    response = {}
+    answers = []
+    student_id = 1 #currently hardcoded, but if we implement a student authentication system, this will be replaced with the student's ID
     try:
         data = request.get_json()
-        #its now for each index!
-        for question in data:
+        questions = data.get('questionStates', [])
+        tutorial_id = data.get('tutorialId', -1)
+        submission = Submission(
+            student_id=student_id,
+            tutorial_id=tutorial_id
+        )
+        db.session.add(submission)
+        for question in questions:
             index = question.get('index', None)
             sectionStates = question.get('sectionStates', {})
             lineStates = question.get('lineStates', {})
             syllogism = question.get('syllogism', {})
             selectedAnswer = question.get('selectedAnswer', None)
             result = syllogism_checker.check_answer(sectionStates, lineStates, selectedAnswer, syllogism)
-            data[index]['result'] = result
-        #save to db
+            response[index] = result
+            new_answer = Answer(
+                submission_id=1,
+                question_id=index,
+                answer=json.dumps({'sectionStates': sectionStates, 'lineStates': lineStates, 'selectedAnswer': selectedAnswer}),
+                automarker_feedback=json.dumps({
+                    'incorrect_sections': result['incorrect_sections'],
+                    'incorrect_lines': result['incorrect_lines'],
+                    'main_answer_correct': result['main_answer_correct']
+                }),)
+            answers.append(new_answer)
+            db.session.add(new_answer)
+        db.session.commit() #save to db
         return jsonify({
             'status': 'success',
-            'result': data
+            'result': response
         }), 200
 
     except Exception as e:

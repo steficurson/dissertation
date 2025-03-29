@@ -48,18 +48,19 @@ class Answer:
             raise ValueError("Invalid line", line)
 
     def apply_premise(self, premise_form, subject, predicate, other):
-        if premise_form == 'A':
-            self.apply_change_to_section(SectionState.SELECTED, subject)
-            self.apply_change_to_section(SectionState.SELECTED, concat_sort(subject, other))
-        elif premise_form == 'E':
-            self.apply_change_to_section(SectionState.SELECTED, concat_sort(subject, predicate))
-            self.apply_change_to_section(SectionState.SELECTED, concat_sort(subject, predicate, other))
-        elif premise_form == 'I':
-            self.apply_change_to_line(LineState.CROSSED, concat_sort(subject, predicate) + "_" + concat_sort(subject, predicate, other))
-        elif premise_form == 'O':
-            self.apply_change_to_line(LineState.CROSSED, subject + "_" + concat_sort(subject, other))
-        else:
-            raise ValueError("Invalid premise form", premise_form)
+        match premise_form:
+            case 'A': # All subject is predicate
+                self.apply_change_to_section(SectionState.SELECTED, subject)
+                self.apply_change_to_section(SectionState.SELECTED, concat_sort(subject, other))
+            case 'E': # No subject is predicate
+                self.apply_change_to_section(SectionState.SELECTED, concat_sort(subject, predicate))
+                self.apply_change_to_section(SectionState.SELECTED, concat_sort(subject, predicate, other))
+            case 'I': # Some subject is predicate
+                self.apply_change_to_line(LineState.CROSSED, concat_sort(subject, predicate) + "_" + concat_sort(subject, predicate, other))
+            case 'O': # Some subject is not predicate
+                self.apply_change_to_line(LineState.CROSSED, subject + "_" + concat_sort(subject, other))
+            case _:
+                raise ValueError("Invalid premise form", premise_form)
 
     def move_cross(self, line, empty_section):
         line_sections = line.split("_")

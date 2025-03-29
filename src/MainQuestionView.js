@@ -63,15 +63,26 @@ const MainQuestionView = () => {
     const newQuestionStates = [...questionStates];
     newQuestionStates[currentIndex] = { "index": currentIndex, sectionStates: svgDiagramRef.current.sectionStates, lineStates: svgDiagramRef.current.lineStates, selectedAnswer: currentSelectedAnswer, syllogism: currentSyllogism };
 
-    console.log("Submitting answers: ", JSON.stringify(newQuestionStates));
+    console.log("Submitting answers: ", JSON.stringify({
+      questionStates: newQuestionStates,
+      tutorialId: tutorialWeek,
+    }))
+
     try {
       const response = await fetch('/api/check', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newQuestionStates),
+        body: JSON.stringify({
+          questionStates: newQuestionStates,
+          tutorialId: tutorialWeek
+        }),
       });
+      //         body: JSON.stringify({
+      //   questionStates: newQuestionStates,
+      //   tutorialId: tutorialWeek
+      // }),
 
       if (!response.ok) {
         const errorText = await response.text();
