@@ -211,4 +211,26 @@ invalid_syllogisms = {
       "tutorial_id":1,
       "valid":False
   },
+  "detise": { #EIE-3
+        "premise1":"No M are P",
+        "premise2":"Some M are S",
+        "conclusion":"No S are P",
+        "major_term":"P",
+        "middle_term":"M",
+        "minor_term":"S",
+        "question_id":1,
+        "tutorial_id":1,
+        "valid":True
+    },
+    "baroca": { #AOA-2
+        "premise1":"All P are M",
+        "premise2":"Some S are not M",
+        "conclusion":"All S are P",
+        "major_term":"P",
+        "middle_term":"M",
+        "minor_term":"S",
+        "question_id":1,
+        "tutorial_id":1,
+        "valid":True
+    },
 }

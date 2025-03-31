@@ -33,7 +33,7 @@ const Submitted = () => {
         }
         {!totallyCorrect(question[1]) &&
           <div>
-            <p> The Venn diagram had {Object.keys(question[1].incorrect_sections).length} sections marked incorrectly and {Object.keys(question[1].incorrect_lines).length} lines marked incorrectly.</p>
+            <p> The Venn diagram had {Object.keys(question[1].incorrect_sections).length} section{Object.keys(question[1].incorrect_sections).length === 1 ? '' : 's'} marked incorrectly and {Object.keys(question[1].incorrect_lines).length} line{Object.keys(question[1].incorrect_lines).length === 1 ? '' : 's'} marked incorrectly.</p>
             {Object.keys(question[1].incorrect_sections).length !== 0 &&
             <div className="mt-2">
               <p> Incorrect sections: </p>
