@@ -101,7 +101,8 @@ def check_answers():
                     'incorrect_sections': result['incorrect_sections'],
                     'incorrect_lines': result['incorrect_lines'],
                     'main_answer_correct': result['main_answer_correct']
-                }),)
+                }),
+                suggested_mark=result['suggested_mark'])
             answers.append(new_answer)
             db.session.add(new_answer)
         db.session.commit() #save to db

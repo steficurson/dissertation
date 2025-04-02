@@ -8,8 +8,9 @@ class Student(db.Model):
     __tablename__ = 'students'
 
     student_id = db.Column(db.String(8), primary_key=True)
-    name = db.Column(db.String, nullable=False)
+    name = db.Column(db.String(50), nullable=False)
     submissions = relationship('Submission', backref='student')
+    tutor_id = db.Column(db.Integer, db.ForeignKey('tutors.tutor_id'), nullable=True)
 
     def __repr__(self): #defines how the object is represented as a string
         return '<Item %r>' % self.name
@@ -53,6 +54,7 @@ class Answer(db.Model):
     question_id = db.Column(db.Integer, db.ForeignKey('questions.question_id'))
     answer = db.Column(db.String(500))
     automarker_feedback = db.Column(db.String(1000))
+    suggested_mark = db.Column(db.Integer)
 
     def __repr__(self):
         return f'<Answer submission_id={self.submission_id}, question_id={self.question_id}>'
@@ -67,3 +69,13 @@ class Submission(db.Model):
 
     def __repr__(self):
         return '<Item %r>' % self.student_id
+
+class Tutor(db.Model):
+    __tablename__ = 'tutors'
+
+    tutor_id = db.Column(db.Integer, index=True, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(50), nullable=False, unique=False)
+    students = relationship('Student', backref='tutor')
+
+    def __repr__(self):
+        return '<Item %r>' % self.tutor_id
