@@ -3,10 +3,13 @@
 ## How to install all dependencies
 
 Run the following commands from the main project directory:
+
 `yarn install`
+
 `npm install`
 
 Then cd into the `api` subdirectory and run:
+
 `pip install -r requirements.txt`
 
 ## How to run
