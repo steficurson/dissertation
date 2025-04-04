@@ -26,7 +26,7 @@ class Question(db.Model):
     major_term = db.Column(db.String(50), nullable=False)
     minor_term = db.Column(db.String(50), nullable=False)
     middle_term = db.Column(db.String(50), nullable=False)
-    valid = db.Column(db.Boolean, nullable=False)
+    valid = db.Column(db.Boolean, nullable=True)
 
     def __repr__(self):
         return '<Item %r>' % self.question_id
